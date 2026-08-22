@@ -1,12 +1,13 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Home,
   BookOpen,
   Clock3,
   CheckSquare,
   Bell,
-  Brain,
-  Target,
-  MessageCircle,
   Settings,
   User,
 } from "lucide-react";
@@ -14,44 +15,39 @@ import {
 const menuItems = [
   {
     label: "Dashboard",
+    href: "/",
     icon: Home,
   },
   {
     label: "Daily Diary",
+    href: "/diary",
     icon: BookOpen,
   },
   {
     label: "Timesheet",
+    href: "/timesheet",
     icon: Clock3,
   },
   {
     label: "To-Do",
+    href: "/tasks",
     icon: CheckSquare,
   },
   {
     label: "Reminders",
+    href: "/reminders",
     icon: Bell,
-  },
-  {
-    label: "Memories",
-    icon: Brain,
-  },
-  {
-    label: "Goals",
-    icon: Target,
-  },
-  {
-    label: "Ask AI",
-    icon: MessageCircle,
   },
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="flex h-screen w-64 flex-col border-r border-gray-200 bg-white">
       {/* Logo */}
       <div className="flex h-16 items-center border-b border-gray-100 px-5">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-900 text-white">
             ✦
           </div>
@@ -62,10 +58,10 @@ export default function Sidebar() {
             </h1>
 
             <p className="text-xs text-gray-500">
-              Your daily companion
+              Your AI companion
             </p>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -75,13 +71,14 @@ export default function Sidebar() {
         </p>
 
         <div className="space-y-1">
-          {menuItems.map((item, index) => {
+          {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = index === 0;
+            const isActive = pathname === item.href;
 
             return (
-              <button
-                key={item.label}
+              <Link
+                key={item.href}
+                href={item.href}
                 className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
                   isActive
                     ? "bg-gray-100 text-gray-900"
@@ -90,7 +87,7 @@ export default function Sidebar() {
               >
                 <Icon size={18} strokeWidth={1.8} />
                 <span>{item.label}</span>
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -98,15 +95,29 @@ export default function Sidebar() {
 
       {/* Bottom Navigation */}
       <div className="border-t border-gray-200 p-3">
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+        <Link
+          href="/settings"
+          className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+            pathname === "/settings"
+              ? "bg-gray-100 text-gray-900"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          }`}
+        >
           <Settings size={18} strokeWidth={1.8} />
           <span>Settings</span>
-        </button>
+        </Link>
 
-        <button className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+        <Link
+          href="/profile"
+          className={`mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+            pathname === "/profile"
+              ? "bg-gray-100 text-gray-900"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          }`}
+        >
           <User size={18} strokeWidth={1.8} />
           <span>Profile</span>
-        </button>
+        </Link>
       </div>
     </aside>
   );
