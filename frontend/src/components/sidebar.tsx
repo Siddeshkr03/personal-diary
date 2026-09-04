@@ -58,7 +58,7 @@ export default function Sidebar() {
             </h1>
 
             <p className="text-xs text-gray-500">
-              Your AI companion
+              Your companion
             </p>
           </div>
         </Link>
